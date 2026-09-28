@@ -1268,3 +1268,9 @@ html[data-theme="light"] .secondary {
   border-color: var(--blue);
   color: var(--blue);
 }
+.hero-buttons .btn {
+  min-width: 120px;
+}
+.hero-buttons .btn {
+  min-width: 120px;
+}
