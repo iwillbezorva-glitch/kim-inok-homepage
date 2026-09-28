@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="김인옥 AI·디지털 교육 전문강사 개인 홈페이지"
+  >
+
+  <title>김인옥 | AI·디지털 교육 전문강사</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- 상단 메뉴 -->
+  <header class="top-header">
+  <div class="header-inner">
+
+    <a class="logo" href="#home">김인옥</a>
+
+    <nav class="top-nav">
+      <a href="#about">소개</a>
+      <a href="#expertise">전문분야</a>
+      <a href="#career">경력</a>
+      <a href="#certificates">자격·저서</a>
+      <a href="#lectures">출강이력</a>
+      <a href="#contact">강의문의</a>
+      <a href="#guestbook">방명록</a>
+    </nav>
+
+    <button
+      id="themeToggle"
+      class="theme-toggle"
+      type="button"
+      aria-label="라이트 테마로 전환"
+      title="테마 전환"
+    >
+      🌙
+    </button>
+
+  </div>
+</header>
+
+
+  <main>
+
+    <!-- 첫 화면 -->
+    <section id="home" class="hero section-wrap">
+
+      <div class="hero-main">
+
+        <div class="profile-area">
+          <img
+            src="images/profile.png"
+            alt="김인옥 강사 프로필 사진"
+            class="profile-image"
+          >
+        </div>
+
+        <div class="hero-text">
+
+          <h1>
+            안녕하세요,
+            <span>김인옥</span>입니다
+          </h1>
+
+          <h2>AI·디지털 교육 전문강사</h2>
+
+          <p class="hero-keywords">
+            생성형 AI · ChatGPT · Gemini · Canva · 디지털 역량교육
+          </p>
+
+          <p
+            class="hero-description"
+            id="heroDescription"
+          ></p>
+
+          <div class="hero-buttons">
+            <a
+              href="#contact"
+              class="btn primary"
+            >
+              강의 문의하기
+            </a>
+
+            <a
+              href="#lectures"
+              class="btn secondary"
+            >
+              출강 이력 보기
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div
+        id="statsGrid"
+        class="stats-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- 강사 소개 -->
+    <section id="about" class="section-wrap">
+
+      <h2 class="section-title">
+        강사 소개
+      </h2>
+
+      <div class="intro-box">
+        <p id="aboutText"></p>
+      </div>
+
+      <div class="about-grid">
+
+        <article class="info-card">
+          <h3>학력</h3>
+          <div id="educationList"></div>
+        </article>
+
+        <article class="info-card">
+          <h3>현직</h3>
+          <div id="positionList"></div>
+        </article>
+
+        <article class="info-card">
+          <h3>강의 대상</h3>
+          <div id="targetList"></div>
+        </article>
+
+        <article class="info-card">
+          <h3>연락처</h3>
+          <div id="contactSummary"></div>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- 전문 분야 -->
+    <section id="expertise" class="section-wrap">
+
+      <h2 class="section-title">
+        전문 분야
+      </h2>
+
+      <div id="expertiseGroups"></div>
+
+    </section>
+
+
+    <!-- 주요 경력 -->
+    <section id="career" class="section-wrap">
+
+      <h2 class="section-title">
+        주요 경력
+      </h2>
+
+      <div
+        id="careerTimeline"
+        class="timeline"
+      ></div>
+
+    </section>
+
+
+    <!-- 자격 및 저서 -->
+    <section
+      id="certificates"
+      class="section-wrap"
+    >
+
+      <h2 class="section-title">
+        자격 및 저서
+      </h2>
+
+      <h3 class="sub-title">
+        자격 및 전문성
+      </h3>
+
+      <div
+        id="certificateTags"
+        class="tag-container"
+      ></div>
+
+
+      <h3 class="sub-title spaced">
+        저서 및 연구 활동
+      </h3>
+
+      <div id="bookList"></div>
+
+
+      <h3 class="sub-title spaced">
+        수상 및 공공기관 참여 활동
+      </h3>
+
+      <div
+        id="awardTags"
+        class="tag-container"
+      ></div>
+
+    </section>
+
+
+    <!-- 교육 참여 / 출강 이력 -->
+    <section
+      id="lectures"
+      class="section-wrap"
+    >
+
+      <h2 class="section-title">
+        교육 참여 · 지원 이력
+      </h2>
+
+      <p class="section-description">
+        직접 강의한 이력과 교육지원 형태로 참여한 이력을 구분하여 표시하였습니다.
+      </p>
+
+
+      <h3 class="lecture-main-title">
+        ✏️ 직접 강의
+      </h3>
+
+      <div id="lectureGroups"></div>
+
+
+      <h3 class="lecture-main-title support-title">
+        🤝 교육지원
+      </h3>
+
+      <div id="supportGroups"></div>
+
+    </section>
+
+
+    <!-- 강의 문의 -->
+    <section
+      id="contact"
+      class="section-wrap"
+    >
+
+      <h2 class="section-title">
+        강의 문의
+      </h2>
+
+      <p class="section-description">
+        강의 의뢰, 출강 문의, 협업 제안을 남겨주시면 확인 후 연락드리겠습니다.
+      </p>
+
+      <div class="contact-grid">
+
+        <div
+          id="contactCards"
+          class="contact-cards"
+        ></div>
+
+
+        <form
+          class="contact-form"
+          action="mailto:iwillbezorva@gmail.com"
+          method="post"
+          enctype="text/plain"
+        >
+
+          <div class="form-row">
+
+            <label>
+              성함 *
+              <input
+                type="text"
+                name="name"
+                placeholder="홍길동"
+                required
+              >
+            </label>
+
+            <label>
+              기관/회사
+              <input
+                type="text"
+                name="organization"
+                placeholder="○○기관"
+              >
+            </label>
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              이메일 *
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              >
+            </label>
+
+            <label>
+              연락처
+              <input
+                type="tel"
+                name="phone"
+                placeholder="010-0000-0000"
+              >
+            </label>
+
+          </div>
+
+
+          <label>
+            희망 교육 주제
+
+            <select name="topic">
+              <option>
+                선택해 주세요
+              </option>
+
+              <option>
+                ChatGPT 및 생성형 AI
+              </option>
+
+              <option>
+                Google Workspace
+              </option>
+
+              <option>
+                AI 업무 효율화
+              </option>
+
+              <option>
+                바이브 코딩
+              </option>
+
+              <option>
+                디지털 역량교육
+              </option>
+
+              <option>
+                기타
+              </option>
+            </select>
+          </label>
+
+
+          <label>
+            문의 내용 *
+
+            <textarea
+              name="message"
+              placeholder="교육 일정, 대상, 인원, 장소 등을 알려주시면 빠른 안내가 가능합니다."
+              required
+            ></textarea>
+          </label>
+
+
+          <div class="form-button-area">
+            <button
+              type="submit"
+              class="btn primary"
+            >
+              문의 보내기
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- 방명록 -->
+    <section
+      id="guestbook"
+      class="section-wrap"
+    >
+
+      <h2 class="section-title">
+        방명록
+      </h2>
+
+      <p class="section-description">
+        강의 후기나 응원의 한마디를 남겨주세요.
+      </p>
+
+      <div class="guestbook-box">
+
+        <div class="form-row">
+
+          <label>
+            이름 *
+
+            <input
+              id="guestName"
+              type="text"
+              placeholder="홍길동"
+            >
+          </label>
+
+          <label>
+            비밀번호
+
+            <input
+              id="guestPassword"
+              type="password"
+              placeholder="••••"
+            >
+          </label>
+
+        </div>
+
+
+        <label>
+          메시지 *
+
+          <textarea
+            id="guestMessage"
+            placeholder="응원의 메시지를 남겨주세요 :)"
+          ></textarea>
+        </label>
+
+
+        <div class="form-button-area">
+
+          <button
+            id="guestSubmit"
+            type="button"
+            class="btn primary"
+          >
+            등록
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="guestbookList"
+        class="guestbook-list"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <!-- 하단 -->
+  <footer>
+
+    <p>
+      김인옥 · AI·디지털 교육 전문강사
+    </p>
+
+    <p>
+      ☎ 010-8339-2964 |
+      <a href="mailto:iwillbezorva@gmail.com">
+        iwillbezorva@gmail.com
+      </a>
+    </p>
+
+    <p>
+      © 2026 김인옥. All rights reserved.
+    </p>
+
+  </footer>
+
+
+  <!-- 데이터와 기능 -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
