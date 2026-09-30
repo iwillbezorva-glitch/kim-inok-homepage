@@ -1274,3 +1274,25 @@ html[data-theme="light"] .secondary {
 .hero-buttons .btn {
   min-width: 120px;
 }
+.guest-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.guest-delete-btn {
+  padding: 5px 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.guest-delete-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}

@@ -491,20 +491,114 @@ function loadGuestbook() {
             );
         }
 
-        card.innerHTML = `
-          <strong>
-            ${escapeHtml(item.name)}
-          </strong>
+        const myMessages =
+  JSON.parse(
+    localStorage.getItem(
+      "kimInokGuestbookOwnerKeys"
+    ) || "{}"
+  );
 
-          <p>
-            ${escapeHtml(item.message)}
-          </p>
+const isMine =
+  item.id &&
+  myMessages[item.id];
 
-          <span>
-            ${escapeHtml(displayDate)}
-          </span>
-        `;
+card.innerHTML = `
+  <strong>
+    ${escapeHtml(item.name)}
+  </strong>
 
+  <p>
+    ${escapeHtml(item.message)}
+  </p>
+
+  <div class="guest-card-bottom">
+    <span>
+      ${escapeHtml(displayDate)}
+    </span>
+
+    ${
+      isMine
+        ? `<button
+             class="guest-delete-btn"
+             type="button"
+           >
+             삭제
+           </button>`
+        : ""
+    }
+  </div>
+`;
+
+if (isMine) {
+  const deleteButton =
+    card.querySelector(
+      ".guest-delete-btn"
+    );
+
+  deleteButton.addEventListener(
+    "click",
+    async () => {
+
+      const confirmed =
+        confirm(
+          "이 방명록을 삭제하시겠습니까?"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      deleteButton.disabled = true;
+      deleteButton.textContent =
+        "삭제 중...";
+
+      try {
+        await fetch(
+          GUESTBOOK_URL,
+          {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+              action: "delete",
+              id: item.id,
+              deleteKey:
+                myMessages[item.id]
+            })
+          }
+        );
+
+        delete myMessages[item.id];
+
+        localStorage.setItem(
+          "kimInokGuestbookOwnerKeys",
+          JSON.stringify(myMessages)
+        );
+
+        setTimeout(() => {
+          loadGuestbook();
+        }, 800);
+
+      } catch (error) {
+        console.error(
+          "방명록 삭제 오류:",
+          error
+        );
+
+        alert(
+          "방명록 삭제 중 오류가 발생했습니다."
+        );
+
+        deleteButton.disabled = false;
+        deleteButton.textContent =
+          "삭제";
+      }
+    }
+  );
+}
         guestbookList.appendChild(card);
       });
   };
@@ -539,9 +633,6 @@ if (guestSubmit) {
       const nameInput =
         getElement("guestName");
 
-      const passwordInput =
-        getElement("guestPassword");
-
       const messageInput =
         getElement("guestMessage");
 
@@ -563,6 +654,12 @@ if (guestSubmit) {
         return;
       }
 
+      const id =
+        crypto.randomUUID();
+
+      const deleteKey =
+        crypto.randomUUID();
+
       guestSubmit.disabled = true;
       guestSubmit.textContent = "등록 중...";
 
@@ -577,18 +674,35 @@ if (guestSubmit) {
                 "text/plain;charset=utf-8"
             },
             body: JSON.stringify({
+              action: "add",
               name: name,
-              message: message
+              message: message,
+              id: id,
+              deleteKey: deleteKey
             })
           }
         );
 
+        /*
+          이 브라우저가 작성한 글의
+          ID와 삭제키를 저장
+        */
+        const myMessages =
+          JSON.parse(
+            localStorage.getItem(
+              "kimInokGuestbookOwnerKeys"
+            ) || "{}"
+          );
+
+        myMessages[id] =
+          deleteKey;
+
+        localStorage.setItem(
+          "kimInokGuestbookOwnerKeys",
+          JSON.stringify(myMessages)
+        );
+
         nameInput.value = "";
-
-        if (passwordInput) {
-          passwordInput.value = "";
-        }
-
         messageInput.value = "";
 
         alert("방명록이 등록되었습니다.");
@@ -609,7 +723,7 @@ if (guestSubmit) {
 
       } finally {
         guestSubmit.disabled = false;
-        guestSubmit.textContent = "방명록 남기기";
+        guestSubmit.textContent = "등록";
       }
     }
   );
