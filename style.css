@@ -1296,3 +1296,30 @@ html[data-theme="light"] .secondary {
   border-color: var(--blue);
   color: var(--blue);
 }
+/* 모바일 최종 보정 */
+@media (max-width: 768px) {
+
+  .header-inner {
+    min-height: 56px;
+    padding: 0 16px;
+  }
+
+  .logo {
+    font-size: 17px;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    margin-left: 10px;
+  }
+
+  section {
+    scroll-margin-top: 80px;
+  }
+
+  .info-card {
+    min-height: auto;
+    padding: 18px 20px;
+  }
+}
