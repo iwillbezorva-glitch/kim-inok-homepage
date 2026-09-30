@@ -429,64 +429,113 @@ function escapeHtml(text) {
 }
 
 
+const GUESTBOOK_URL =
+  "https://script.google.com/macros/s/AKfycbyWTYT4ZgbOCeUFsjwlqwaEygXSrwztBIz1393N9j0th3qOrRjuFjPlNwbtHOhXMC1_AA/exec";
+
 function loadGuestbook() {
   if (!guestbookList) {
     return;
   }
 
-  const messages =
-    JSON.parse(
-      localStorage.getItem(
-        "kimInokGuestbookMessages"
-      ) || "[]"
-    );
+  guestbookList.innerHTML = `
+    <p class="guest-empty">
+      방명록을 불러오는 중입니다...
+    </p>
+  `;
 
-  guestbookList.innerHTML = "";
+  const callbackName =
+    "handleGuestbookData";
 
-  if (messages.length === 0) {
-    guestbookList.innerHTML = `
-      <p class="guest-empty">
-        아직 방명록이 없습니다.
-        첫 번째로 메시지를 남겨보세요! 🙌
-      </p>
-    `;
+  window[callbackName] = function(messages) {
 
-    return;
-  }
+    guestbookList.innerHTML = "";
 
-
-  messages
-    .slice()
-    .reverse()
-    .forEach((item) => {
-      const card = createElement(
-        "div",
-        "guest-card"
-      );
-
-      card.innerHTML = `
-        <strong>
-          ${escapeHtml(item.name)}
-        </strong>
-
-        <p>
-          ${escapeHtml(item.message)}
+    if (
+      !Array.isArray(messages) ||
+      messages.length === 0
+    ) {
+      guestbookList.innerHTML = `
+        <p class="guest-empty">
+          아직 방명록이 없습니다.<br>
+          첫 번째로 메시지를 남겨보세요! 🙌
         </p>
-
-        <span>
-          ${escapeHtml(item.date)}
-        </span>
       `;
 
-      guestbookList.appendChild(card);
-    });
+      return;
+    }
+
+    messages
+      .slice()
+      .reverse()
+      .forEach((item) => {
+
+        const card = createElement(
+          "div",
+          "guest-card"
+        );
+
+        let displayDate = "";
+
+        if (item.date) {
+          const date =
+            new Date(item.date);
+
+          displayDate =
+            date.toLocaleDateString(
+              "ko-KR",
+              {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+              }
+            );
+        }
+
+        card.innerHTML = `
+          <strong>
+            ${escapeHtml(item.name)}
+          </strong>
+
+          <p>
+            ${escapeHtml(item.message)}
+          </p>
+
+          <span>
+            ${escapeHtml(displayDate)}
+          </span>
+        `;
+
+        guestbookList.appendChild(card);
+      });
+  };
+
+  const script =
+    document.createElement("script");
+
+  script.src =
+    GUESTBOOK_URL +
+    "?callback=" +
+    callbackName +
+    "&t=" +
+    Date.now();
+
+  script.onerror = function() {
+    guestbookList.innerHTML = `
+      <p class="guest-empty">
+        방명록을 불러오지 못했습니다.
+      </p>
+    `;
+  };
+
+  document.body.appendChild(script);
 }
 
 
 if (guestSubmit) {
   guestSubmit.addEventListener(
     "click",
-    () => {
+    async () => {
+
       const nameInput =
         getElement("guestName");
 
@@ -496,16 +545,11 @@ if (guestSubmit) {
       const messageInput =
         getElement("guestMessage");
 
-
       const name =
         nameInput.value.trim();
 
-      const password =
-        passwordInput.value.trim();
-
       const message =
         messageInput.value.trim();
-
 
       if (!name) {
         alert("이름을 입력해주세요.");
@@ -513,58 +557,68 @@ if (guestSubmit) {
         return;
       }
 
-
       if (!message) {
         alert("메시지를 입력해주세요.");
         messageInput.focus();
         return;
       }
 
+      guestSubmit.disabled = true;
+      guestSubmit.textContent = "등록 중...";
 
-      const messages =
-        JSON.parse(
-          localStorage.getItem(
-            "kimInokGuestbookMessages"
-          ) || "[]"
+      try {
+        await fetch(
+          GUESTBOOK_URL,
+          {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+              name: name,
+              message: message
+            })
+          }
         );
 
+        nameInput.value = "";
 
-      messages.push({
-        name,
-        password,
-        message,
+        if (passwordInput) {
+          passwordInput.value = "";
+        }
 
-        date:
-          new Date()
-            .toLocaleDateString(
-              "ko-KR",
-              {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit"
-              }
-            )
-      });
+        messageInput.value = "";
 
+        alert("방명록이 등록되었습니다.");
 
-      localStorage.setItem(
-        "kimInokGuestbookMessages",
-        JSON.stringify(messages)
-      );
+        setTimeout(() => {
+          loadGuestbook();
+        }, 800);
 
+      } catch (error) {
+        console.error(
+          "방명록 등록 오류:",
+          error
+        );
 
-      nameInput.value = "";
-      passwordInput.value = "";
-      messageInput.value = "";
+        alert(
+          "방명록 등록 중 오류가 발생했습니다."
+        );
 
-
-      loadGuestbook();
+      } finally {
+        guestSubmit.disabled = false;
+        guestSubmit.textContent = "방명록 남기기";
+      }
     }
   );
 }
 
-
 loadGuestbook();
+
+
+
 
 
 /* ========================================
