@@ -624,7 +624,6 @@ if (isMine) {
   document.body.appendChild(script);
 }
 
-
 if (guestSubmit) {
   guestSubmit.addEventListener(
     "click",
@@ -636,21 +635,89 @@ if (guestSubmit) {
       const messageInput =
         getElement("guestMessage");
 
+      const websiteInput =
+        getElement("guestWebsite");
+
       const name =
         nameInput.value.trim();
 
       const message =
         messageInput.value.trim();
 
+      const website =
+        websiteInput
+          ? websiteInput.value.trim()
+          : "";
+
+      /* 1. 숨은 입력칸이 채워지면 봇으로 판단 */
+      if (website) {
+        console.warn("스팸 등록 차단");
+        return;
+      }
+
+      /* 2. 이름 확인 */
       if (!name) {
         alert("이름을 입력해주세요.");
         nameInput.focus();
         return;
       }
 
+      if (name.length > 20) {
+        alert("이름은 20자 이내로 입력해주세요.");
+        nameInput.focus();
+        return;
+      }
+
+      /* 3. 메시지 확인 */
       if (!message) {
         alert("메시지를 입력해주세요.");
         messageInput.focus();
+        return;
+      }
+
+      if (message.length > 500) {
+        alert("메시지는 500자 이내로 입력해주세요.");
+        messageInput.focus();
+        return;
+      }
+
+      /* 4. 링크가 2개 이상이면 차단 */
+      const links =
+        message.match(/https?:\/\//gi) || [];
+
+      if (links.length >= 2) {
+        alert(
+          "링크가 여러 개 포함된 메시지는 등록할 수 없습니다."
+        );
+        return;
+      }
+
+      /* 5. 30초 연속 등록 방지 */
+      const LAST_SUBMIT_KEY =
+        "kimInokGuestbookLastSubmit";
+
+      const lastSubmit =
+        Number(
+          localStorage.getItem(
+            LAST_SUBMIT_KEY
+          ) || 0
+        );
+
+      const now = Date.now();
+
+      const cooldown = 30000;
+
+      if (now - lastSubmit < cooldown) {
+        const remaining =
+          Math.ceil(
+            (cooldown - (now - lastSubmit))
+            / 1000
+          );
+
+        alert(
+          `방명록은 ${remaining}초 후 다시 등록할 수 있습니다.`
+        );
+
         return;
       }
 
@@ -678,15 +745,12 @@ if (guestSubmit) {
               name: name,
               message: message,
               id: id,
-              deleteKey: deleteKey
+              deleteKey: deleteKey,
+              website: website
             })
           }
         );
 
-        /*
-          이 브라우저가 작성한 글의
-          ID와 삭제키를 저장
-        */
         const myMessages =
           JSON.parse(
             localStorage.getItem(
@@ -702,8 +766,18 @@ if (guestSubmit) {
           JSON.stringify(myMessages)
         );
 
+        /* 등록 시간 저장 */
+        localStorage.setItem(
+          LAST_SUBMIT_KEY,
+          String(Date.now())
+        );
+
         nameInput.value = "";
         messageInput.value = "";
+
+        if (websiteInput) {
+          websiteInput.value = "";
+        }
 
         alert("방명록이 등록되었습니다.");
 

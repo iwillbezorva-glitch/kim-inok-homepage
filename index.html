@@ -410,10 +410,13 @@
           <label>
             이름 *
 
-            <input
-              id="guestName"
-              type="text"
-              placeholder="홍길동"
+            
+          <input
+  id="guestName"
+  type="text"
+  maxlength="20"
+  placeholder="홍길동"
+>  
             >
           </label>
 
@@ -426,11 +429,19 @@
           메시지 *
 
           <textarea
-            id="guestMessage"
-            placeholder="응원의 메시지를 남겨주세요 :)"
-          ></textarea>
+  id="guestMessage"
+  maxlength="500"
+  placeholder="응원의 메시지를 남겨주세요 :)"
+></textarea>
         </label>
-
+       <input
+  id="guestWebsite"
+  type="text"
+  tabindex="-1"
+  autocomplete="off"
+  aria-hidden="true"
+  style="position:absolute; left:-9999px;"
+>
 
         <div class="form-button-area">
 
