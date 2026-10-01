@@ -207,41 +207,63 @@ if (
    7. 자격 및 전문성
 ======================================== */
 
-const certificateTags =
-  getElement("certificateTags");
+const humanitiesCertificates =
+  getElement("humanitiesCertificates");
+
+const digitalCertificates =
+  getElement("digitalCertificates");
+
+const humanitiesList = [
+  "독서지도사",
+  "토론지도사 2급",
+  "디베이트 코치 1급",
+  "디베이트 심판 자격"
+];
+
+const highlightedCertificates = [
+   "독서지도사",
+  "디베이트 심판 자격",
+
+  "Google 공인 교육전문가 Level 1",
+  "Google 공인 교육전문가 Level 2",
+  "Google TSA (Trainer Skills Assessment)",
+  "Gemini 공인 교육전문가",
+  "Claude101 1급",
+  "Canva 디지털콘텐츠강사 2급"
+];
+
+function renderCertificate(container, item) {
+  const tag = createElement(
+    "span",
+    "certificate-tag"
+  );
+
+  tag.textContent = item;
+
+  if (highlightedCertificates.includes(item)) {
+    tag.classList.add("certificate-highlight");
+  }
+
+  container.appendChild(tag);
+}
 
 if (
-  certificateTags &&
+  humanitiesCertificates &&
+  digitalCertificates &&
   Array.isArray(profileData.certificates)
 ) {
-  certificateTags.innerHTML = "";
-
-  const highlightedCertificates = [
-    "Google 공인 교육전문가 Level 1",
-    "Google 공인 교육전문가 Level 2",
-    "Google TSA (Trainer Skills Assessment)",
-    "Gemini 공인 교육전문가",
-    "Claude101 1급",
-    "뤼튼AI교육컨설턴트",
-    "캔바 디지털콘텐츠강사 2급"
-  ];
+  humanitiesCertificates.innerHTML = "";
+  digitalCertificates.innerHTML = "";
 
   profileData.certificates.forEach((item) => {
-
-    const tag = createElement(
-      "span",
-      "certificate-tag"
-    );
-
-    tag.textContent = item;
-
-    if (highlightedCertificates.includes(item)) {
-      tag.classList.add("certificate-highlight");
+    if (humanitiesList.includes(item)) {
+      renderCertificate(humanitiesCertificates, item);
+    } else {
+      renderCertificate(digitalCertificates, item);
     }
-
-    certificateTags.appendChild(tag);
   });
-}  
+}
+
 
 /* ========================================
    8. 저서 및 연구 활동
@@ -255,19 +277,34 @@ if (
 ) {
   bookList.innerHTML = "";
 
-  profileData.books.forEach((book) => {
-    const card = createElement(
-      "div",
-      "book-card"
-    );
+ profileData.books.forEach((book) => {
+  const card = createElement(
+    "div",
+    "book-card"
+  );
 
-    card.innerHTML = `
-      <strong>${book.year}</strong>
-      <span>${book.title}</span>
-    `;
+  card.innerHTML = `
+    <img
+      src="${book.image}"
+      alt="${book.title} 표지"
+      class="book-cover"
+    >
 
-    bookList.appendChild(card);
-  });
+    <div class="book-info">
+      <div class="book-title">
+        ${book.title} · ${book.role}
+      </div>
+
+      ${
+        book.organization
+          ? `<div class="book-organization">(${book.organization})</div>`
+          : ""
+      }
+    </div>
+  `;
+
+  bookList.appendChild(card);
+});
 }
 
 
