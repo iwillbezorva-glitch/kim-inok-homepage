@@ -1418,3 +1418,29 @@ html[data-theme="light"] .secondary {
 .certificate-group:last-child {
   margin-bottom: 0;
 }
+.guest-reply {
+  margin-top: 18px;
+  padding: 15px 18px;
+  background: var(--panel-soft);
+  border-left: 3px solid var(--blue);
+  border-radius: 8px;
+}
+
+.guest-reply-title {
+  margin-bottom: 7px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.guest-reply p {
+  margin: 0 0 7px;
+  color: var(--soft-text);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.guest-reply span {
+  color: var(--muted);
+  font-size: 12px;
+}

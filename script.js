@@ -539,6 +539,28 @@ const isMine =
   item.id &&
   myMessages[item.id];
 
+let replyDate = "";
+
+if (item.replyDate) {
+  const date =
+    new Date(item.replyDate);
+
+  if (!isNaN(date)) {
+    replyDate =
+      date.toLocaleDateString(
+        "ko-KR",
+        {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        }
+      );
+  } else {
+    replyDate =
+      String(item.replyDate);
+  }
+}
+
 card.innerHTML = `
   <strong>
     ${escapeHtml(item.name)}
@@ -564,6 +586,28 @@ card.innerHTML = `
         : ""
     }
   </div>
+
+  ${
+    item.reply
+      ? `
+        <div class="guest-reply">
+          <div class="guest-reply-title">
+            ↳ 김인옥 강사
+          </div>
+
+          <p>
+            ${escapeHtml(item.reply)}
+          </p>
+
+          ${
+            replyDate
+              ? `<span>${escapeHtml(replyDate)}</span>`
+              : ""
+          }
+        </div>
+      `
+      : ""
+  }
 `;
 
 if (isMine) {

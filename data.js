@@ -740,7 +740,7 @@ const profileData = {
         },
 
         {
-          organization: "신농교육원",
+          organization: "심농교육원",
           title: "AI 활용 농산물 홍보 콘텐츠"
         }
 
