@@ -84,3 +84,16 @@ if (!profileData.certificates.includes("Vrew 강사아카데미 수료")) {
   const index = profileData.certificates.indexOf("Canva 디지털콘텐츠강사 2급");
   profileData.certificates.splice(index + 1, 0, "Vrew 강사아카데미 수료");
 }
+
+/* 도서관 기관명 오타 수정 */
+const humanitiesGroup = profileData.lectures.find(
+  group => group.category === "인문학·역사·문학"
+);
+
+if (humanitiesGroup) {
+  humanitiesGroup.items.forEach(item => {
+    if (item.organization === "경기 독립김포도서관") {
+      item.organization = "경기도립김포도서관";
+    }
+  });
+}
