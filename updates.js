@@ -78,3 +78,9 @@ addLecture(profileData.supportLectures, "농업기관", [
 if (!profileData.positions.includes("영진사이버대학교 노인돌봄 생활지도사 양성과정 교수")) {
   profileData.positions.unshift("영진사이버대학교 노인돌봄 생활지도사 양성과정 교수");
 }
+
+/* AI·디지털 전문역량에 Vrew 수료 추가 */
+if (!profileData.certificates.includes("Vrew 강사아카데미 수료")) {
+  const index = profileData.certificates.indexOf("Canva 디지털콘텐츠강사 2급");
+  profileData.certificates.splice(index + 1, 0, "Vrew 강사아카데미 수료");
+}
