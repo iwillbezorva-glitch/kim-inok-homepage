@@ -73,3 +73,8 @@ addLecture(profileData.supportLectures, "농업기관", [
     title: "생성형 AI를 활용한 도시농업 콘텐츠 기획 및 제작"
   }
 ]);
+
+/* 현직에 영진사이버대학교 교수 경력 추가 */
+if (!profileData.positions.includes("영진사이버대학교 노인돌봄 생활지도사 양성과정 교수")) {
+  profileData.positions.unshift("영진사이버대학교 노인돌봄 생활지도사 양성과정 교수");
+}
